@@ -30,6 +30,32 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
+    private String bio;
+    private String profilePicture;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<User> followers;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private  Set<Post> content;
+
+    public Set<Post> getContent() {
+        return content;
+    }
+
+    public void setContent(Set<Post> content) {
+        this.content = content;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<User> following;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<UserRole> roles = new HashSet<>();
+
     public User() {
 
     }
@@ -38,17 +64,7 @@ public class User {
         return id;
     }
 
-    public User(Long id, String username, String email, String password, String bio, String profilePicture, Set<User> followers, Set<User> following, Set<UserRole> roles) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.bio = bio;
-        this.profilePicture = profilePicture;
-        this.followers = followers;
-        this.following = following;
-        this.roles = roles;
-    }
+
 
     public User(String username, String email, String password) {
         this.username = username;
@@ -124,18 +140,5 @@ public class User {
         this.roles = roles;
     }
 
-    @Column(nullable = false)
-    private String password;
-
-    private String bio;
-    private String profilePicture;
-
-    @ManyToMany
-    private Set<User> followers;
-
-    @ManyToMany
-    private Set<User> following;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<UserRole> roles = new HashSet<>();
 }
 

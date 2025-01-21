@@ -29,19 +29,42 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String caption;
     private String mediaUrl;
     private String musicUrl;
+
+    @Column( nullable = false)
     private String category;
 
-    private Date createdAt;
+    private Date createdAt=new Date();
 
-    @ManyToOne
-    private User user;
+
 
     public Post() {
 
     }
+
+    public Post(String caption, String category) {
+        this.caption = caption;
+        this.category = category;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    @ManyToOne
+    private User user; //means many post -one user
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Comment> comments;
+
+
 
     public Long getId() {
         return id;
